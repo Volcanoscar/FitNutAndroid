@@ -11,6 +11,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 /**
  * Created by 心成 on 2015/7/28.
  */
@@ -19,6 +21,7 @@ public class CountFragment extends Fragment{
     private CallBacks mActivity;
     private TextView returnText;
     private TextView actNameText;
+    private TextView weightText;
     private Button goFinishButton;
     private Act mAct;
 
@@ -32,6 +35,7 @@ public class CountFragment extends Fragment{
 
         returnText = (TextView) v.findViewById(R.id.returnText);
         actNameText = (TextView) v.findViewById(R.id.actNameText);
+        weightText = (TextView) v.findViewById(R.id.actWeightText);
         goFinishButton = (Button) v.findViewById(R.id.goFinishButton);
         goFinishButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,7 +69,6 @@ public class CountFragment extends Fragment{
     }
 
     private void displayData(String data) {
-        Toast.makeText(getActivity(), data, Toast.LENGTH_SHORT).show();
         returnText.setText(data);
     }
 
@@ -73,6 +76,8 @@ public class CountFragment extends Fragment{
         mAct = ActList.get().initAct();
         mActivity.sendMessage("N" + mAct.getmNum().toString() + "D");
         actNameText.setText(mAct.getmName());
+        weightText.setText(mAct.getmWeight().toString());
+
     }
 
     private void changeAct(){
@@ -82,6 +87,7 @@ public class CountFragment extends Fragment{
         }else {
             mActivity.sendMessage("N" + mAct.getmNum().toString() + "D");
             actNameText.setText(mAct.getmName());
+            weightText.setText(mAct.getmWeight().toString());
         }
     }
 

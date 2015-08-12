@@ -54,4 +54,8 @@ public class ActList {
             return 2;
     }
 
+    public ArrayList<Act> getActs(){
+        return mActs;
+    }
+
 }
