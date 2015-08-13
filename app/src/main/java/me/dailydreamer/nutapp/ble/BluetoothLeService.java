@@ -31,9 +31,14 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.List;
 import java.util.UUID;
+
+import me.dailydreamer.nutapp.Act;
+import me.dailydreamer.nutapp.ActList;
+import me.dailydreamer.nutapp.DeviceControlActivity;
 
 /**
  * Service for managing connection and data communication with a GATT server hosted on a
@@ -72,6 +77,8 @@ public class BluetoothLeService extends Service {
     private BluetoothGatt mBluetoothGatt;
     private int mConnectionState = STATE_DISCONNECTED;
 
+    private BluetoothGattCharacteristic characteristicTX, characteristicRX;
+
     // Implements callback methods for GATT events that the app cares about.  For example,
     // connection change and services discovered.
 
@@ -98,6 +105,12 @@ public class BluetoothLeService extends Service {
         @Override
         public void onServicesDiscovered(BluetoothGatt gatt, int status) {
             if (status == BluetoothGatt.GATT_SUCCESS) {
+                characteristicTX = getSoftSerialService().getCharacteristic(BluetoothLeService.UUID_MD_RX_TX);
+                characteristicRX = characteristicTX;
+
+                if (characteristicTX != null) {
+                    setCharacteristicNotification(characteristicTX, true);
+                }
                 broadcastUpdate(ACTION_GATT_SERVICES_DISCOVERED);
             } else {
                 Log.w(TAG, "onServicesDiscovered received: " + status);
@@ -133,13 +146,10 @@ public class BluetoothLeService extends Service {
         Log.i(TAG, "data: " + characteristic.getValue());
 
         if (data != null && data.length > 0) {
-            final StringBuilder stringBuilder = new StringBuilder(data.length);
-            for (byte byteChar : data)
-                stringBuilder.append(String.format("%02X ", byteChar));
             Log.d(TAG, String.format("%s", new String(data)));
             // getting cut off when longer, need to push on new line, 0A
             intent.putExtra(EXTRA_DATA, String.format("%s", new String(data)));
-
+            onReceiveDate(String.format("%s", new String(data)));
         }
         sendBroadcast(intent);
     }
@@ -353,4 +363,30 @@ public class BluetoothLeService extends Service {
 //
 //        Log.d(TAG, "RX TX ready!");
 //    }
+
+    private void onReceiveDate(String data){
+        ActList.get().setmCount(data);
+        if (data.equals("Finish")){
+            changeAct();
+        }
+    }
+
+    private void changeAct(){
+        Act mAct = ActList.get().getNextAct();
+        if (mAct.getmName().equals("Finish")){
+
+        }else {
+            sendMessage("N" + mAct.getmNum().toString() + "D");
+        }
+    }
+
+    public void sendMessage(String msg) {
+
+        if ((characteristicTX != null) && (characteristicRX != null)) {
+            characteristicTX.setValue(msg);
+            writeCharacteristic(characteristicTX);
+            setCharacteristicNotification(characteristicRX, true);
+            Log.d(TAG, "Sending Result=" + msg);
+        }
+    }
 }

@@ -68,16 +68,15 @@ public class CountFragment extends Fragment{
     }
 
     public void updateAct(){
-        Act act = mActivity.getmAct();
+        Act act = ActList.get().getmAct();
+        if (act.getmName().equals("Finish"))
+            mActivity.goFinish();
         actNameText.setText(act.getmName());
         weightText.setText(act.getmWeight().toString());
-        returnText.setText(mActivity.getmCount());
+        returnText.setText(ActList.get().getmCount());
     }
 
     public interface CallBacks{
-        void sendMessage(String str);
         void goFinish();
-        Act getmAct();
-        String getmCount();
     }
 }

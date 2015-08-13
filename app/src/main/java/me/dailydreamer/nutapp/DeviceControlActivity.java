@@ -54,9 +54,6 @@ public class DeviceControlActivity extends Activity implements CountFragment.Cal
     private PlanFragment mPlanFragment;
     private DoneFragment mDoneFragment;
 
-    private Act mAct;
-    private String mCount;
-
     // Code to manage Service lifecycle.
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
 
@@ -88,7 +85,7 @@ public class DeviceControlActivity extends Activity implements CountFragment.Cal
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
             if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
-                Toast.makeText(DeviceControlActivity.this, "Device Connected", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(DeviceControlActivity.this, "Device Connected", Toast.LENGTH_SHORT).show();
             } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
                 Toast.makeText(DeviceControlActivity.this, "Device Disconnected", Toast.LENGTH_SHORT).show();
             } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
@@ -130,6 +127,7 @@ public class DeviceControlActivity extends Activity implements CountFragment.Cal
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+
         final Intent intent = getIntent();
         mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
         mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
@@ -207,36 +205,27 @@ public class DeviceControlActivity extends Activity implements CountFragment.Cal
 
     private void onReceiveDate(String data){
         if (data != null){
-            mCount = data;
             if (mCountFragment != null)
-                mCountFragment.displayData(mCount);
-            if (mCount.equals("Finish")){
+                mCountFragment.displayData(data);
+            if (data.equals("Finish")){
                 changeAct();
             }
         }
     }
 
     private void initAct(){
-        mAct = ActList.get().initAct();
+        Act mAct = ActList.get().initAct();
         sendMessage("N" + mAct.getmNum().toString() + "D");
     }
 
     private void changeAct(){
-        mAct = ActList.get().getNextAct();
+        Act mAct = ActList.get().getmAct();
         if (mAct.getmName().equals("Finish")){
             goFinish();
         }else {
-            sendMessage("N" + mAct.getmNum().toString() + "D");
             if (mCountFragment != null)
                 mCountFragment.updateAct();
         }
     }
 
-    public String getmCount() {
-        return mCount;
-    }
-
-    public Act getmAct() {
-        return mAct;
-    }
 }

@@ -1,5 +1,7 @@
 package me.dailydreamer.nutapp;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 /**
@@ -10,12 +12,14 @@ public class ActList {
     private static Integer sOrder;
     private ArrayList<Act> mActs;
 
+    private Act mAct;
+    private String mCount;
+
     private ActList(){
         mActs = new ArrayList<Act>();
-        sOrder = -1;
-        addAct(new Act("A", 10));
-        addAct(new Act("B", 5));
-        addAct(new Act("C", 8));
+        addAct(new Act("A", 2));
+        addAct(new Act("B", 2));
+        addAct(new Act("C", 2));
     }
 
     public static ActList get(){
@@ -30,23 +34,25 @@ public class ActList {
 
     public Act getNextAct(){
         if (++sOrder < mActs.size())
-            return mActs.get(sOrder);
+            mAct = mActs.get(sOrder);
         else {
-            sOrder = -1;
-            return new Act("Finish", 0);
+            mAct = new Act("Finish", 0);
         }
+        return mAct;
     }
 
     public Act initAct(){
         sOrder = 0;
-        return mActs.get(sOrder);
+        mAct = mActs.get(sOrder);
+        return mAct;
     }
 
     public int getProgress(){
-        float tmp = (float)sOrder / mActs.size();
-        if (tmp == 0)
+        Float tmp = (float)sOrder / mActs.size();
+        Log.d("progress", tmp.toString());
+        if (tmp < 0.05)
             return 0;
-        else if (tmp == 1)
+        else if (tmp > 0.95)
             return 3;
         else if (tmp < 0.5)
             return 1;
@@ -62,4 +68,19 @@ public class ActList {
         return mActs.size();
     }
 
+    public Act getmAct() {
+        return mAct;
+    }
+
+    public void setmAct(Act mAct) {
+        this.mAct = mAct;
+    }
+
+    public String getmCount() {
+        return mCount;
+    }
+
+    public void setmCount(String mCount) {
+        this.mCount = mCount;
+    }
 }
