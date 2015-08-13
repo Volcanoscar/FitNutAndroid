@@ -47,7 +47,7 @@ public class ActList {
         return mAct;
     }
 
-    public int getProgress(){
+    public int getNutProgress(){
         Float tmp = (float)sOrder / mActs.size();
         Log.d("progress", tmp.toString());
         if (tmp < 0.05)
@@ -58,6 +58,10 @@ public class ActList {
             return 1;
         else
             return 2;
+    }
+
+    public int getLedProgress(){
+        return (int)((float)sOrder * 12 / mActs.size());
     }
 
     public ArrayList<Act> getActs(){

@@ -1,6 +1,7 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
 
     <NumberPicker
         android:id="@+id/numberPicker"
@@ -8,24 +9,31 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="64dp" />
+        android:layout_marginTop="64dp"
+        android:layout_gravity="center"/>
 
-    <Button
-        android:id="@+id/button2"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Cancel"
-        android:layout_alignTop="@+id/button1"
-        android:layout_toEndOf="@+id/numberPicker"
-        android:background="@drawable/blankbutton2" />
+        android:orientation="horizontal"
+        android:layout_gravity="center">
 
     <Button
         android:id="@+id/button1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Set"
-        android:layout_centerVertical="true"
-        android:layout_toStartOf="@+id/numberPicker"
-        android:background="@drawable/blankbutton2"/>
+        android:background="@drawable/blankbutton2"
+        android:layout_weight="1"/>
 
-</RelativeLayout>
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancel"
+        android:background="@drawable/blankbutton2"
+        android:layout_weight="1"/>
+
+    </LinearLayout>
+
+</LinearLayout>

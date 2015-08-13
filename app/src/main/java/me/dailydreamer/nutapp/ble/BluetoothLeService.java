@@ -148,8 +148,10 @@ public class BluetoothLeService extends Service {
         if (data != null && data.length > 0) {
             Log.d(TAG, String.format("%s", new String(data)));
             // getting cut off when longer, need to push on new line, 0A
-            intent.putExtra(EXTRA_DATA, String.format("%s", new String(data)));
-            onReceiveDate(String.format("%s", new String(data)));
+            String tmp = String.format("%s", new String(data));
+            tmp = tmp.replace("\r\n","");
+            intent.putExtra(EXTRA_DATA, tmp);
+            onReceiveDate(tmp);
         }
         sendBroadcast(intent);
     }

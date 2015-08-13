@@ -116,8 +116,9 @@ public class PlanFragment extends ListFragment {
                     b1.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            act.setmNum(numberPicker.getValue());
-                            numTextView.setText(numberPicker.getValue());
+                            Integer tmp = numberPicker.getValue();
+                            act.setmNum(tmp);
+                            numTextView.setText(tmp.toString());
                             d.dismiss();
                         }
                     });

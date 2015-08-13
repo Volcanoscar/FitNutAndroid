@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +24,8 @@ public class CountFragment extends Fragment{
     private TextView actNameText;
     private TextView weightText;
     private Button goFinishButton;
+    private ImageView ledImageView;
+    public final int[] ledResId = {R.drawable.led0, R.drawable.led1, R.drawable.led2, R.drawable.led3, R.drawable.led4, R.drawable.led5, R.drawable.led6, R.drawable.led7, R.drawable.led8, R.drawable.led9, R.drawable.led10, R.drawable.led11, R.drawable.led12};
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,6 +45,8 @@ public class CountFragment extends Fragment{
                 mActivity.goFinish();
             }
         });
+        ledImageView = (ImageView) v.findViewById(R.id.ledImageView);
+        ledImageView.setImageResource(R.drawable.led0);
         return v;
     }
 
@@ -72,8 +77,11 @@ public class CountFragment extends Fragment{
         if (act.getmName().equals("Finish"))
             mActivity.goFinish();
         actNameText.setText(act.getmName());
-        weightText.setText(act.getmWeight().toString()+"Kg");
+        weightText.setText(act.getmWeight().toString() + "Kg");
         returnText.setText(ActList.get().getmCount());
+
+        int i = ActList.get().getLedProgress();
+        ledImageView.setImageResource(ledResId[i]);
     }
 
     public interface CallBacks{
