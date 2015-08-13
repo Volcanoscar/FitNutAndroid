@@ -58,4 +58,8 @@ public class ActList {
         return mActs;
     }
 
+    public int getGroupNumber(){
+        return mActs.size();
+    }
+
 }

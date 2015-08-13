@@ -23,7 +23,6 @@ public class CountFragment extends Fragment{
     private TextView actNameText;
     private TextView weightText;
     private Button goFinishButton;
-    private Act mAct;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,7 +42,6 @@ public class CountFragment extends Fragment{
                 mActivity.goFinish();
             }
         });
-        initAct();
         return v;
     }
 
@@ -59,40 +57,27 @@ public class CountFragment extends Fragment{
         mActivity = null;
     }
 
-    public void handleData(String data){
-        if (data != null){
-            displayData(data);
-            if (data.equals("Finish")){
-                changeAct();
-            }
-        }
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateAct();
     }
 
-    private void displayData(String data) {
+    public void displayData(String data) {
         returnText.setText(data);
     }
 
-    private void initAct(){
-        mAct = ActList.get().initAct();
-        mActivity.sendMessage("N" + mAct.getmNum().toString() + "D");
-        actNameText.setText(mAct.getmName());
-        weightText.setText(mAct.getmWeight().toString());
-
-    }
-
-    private void changeAct(){
-        mAct = ActList.get().getNextAct();
-        if (mAct.getmName().equals("Finish")){
-            mActivity.goFinish();
-        }else {
-            mActivity.sendMessage("N" + mAct.getmNum().toString() + "D");
-            actNameText.setText(mAct.getmName());
-            weightText.setText(mAct.getmWeight().toString());
-        }
+    public void updateAct(){
+        Act act = mActivity.getmAct();
+        actNameText.setText(act.getmName());
+        weightText.setText(act.getmWeight().toString());
+        returnText.setText(mActivity.getmCount());
     }
 
     public interface CallBacks{
         void sendMessage(String str);
         void goFinish();
+        Act getmAct();
+        String getmCount();
     }
 }

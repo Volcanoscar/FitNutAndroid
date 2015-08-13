@@ -54,6 +54,8 @@ public class DeviceControlActivity extends Activity implements CountFragment.Cal
     private PlanFragment mPlanFragment;
     private DoneFragment mDoneFragment;
 
+    private Act mAct;
+    private String mCount;
 
     // Code to manage Service lifecycle.
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
@@ -110,8 +112,7 @@ public class DeviceControlActivity extends Activity implements CountFragment.Cal
                 }
 
             } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
-                if (mCountFragment != null)
-                    mCountFragment.handleData(intent.getStringExtra(mBluetoothLeService.EXTRA_DATA));
+                onReceiveDate(intent.getStringExtra(mBluetoothLeService.EXTRA_DATA));
             }
         }
     };
@@ -185,9 +186,10 @@ public class DeviceControlActivity extends Activity implements CountFragment.Cal
     }
 
     public void setCountFragment(){
-        sendMessage("G5D");
+        sendMessage("G" + ActList.get().getGroupNumber() + "D");
         FragmentManager fm = getFragmentManager();
         mCountFragment = new CountFragment();
+        initAct();
         fm.beginTransaction().replace(R.id.fragmentContainer, mCountFragment).commit();
     }
 
@@ -201,5 +203,40 @@ public class DeviceControlActivity extends Activity implements CountFragment.Cal
         FragmentManager fm = getFragmentManager();
         mDoneFragment = new DoneFragment();
         fm.beginTransaction().replace(R.id.fragmentContainer, mDoneFragment).commit();
+    }
+
+    private void onReceiveDate(String data){
+        if (data != null){
+            mCount = data;
+            if (mCountFragment != null)
+                mCountFragment.displayData(mCount);
+            if (mCount.equals("Finish")){
+                changeAct();
+            }
+        }
+    }
+
+    private void initAct(){
+        mAct = ActList.get().initAct();
+        sendMessage("N" + mAct.getmNum().toString() + "D");
+    }
+
+    private void changeAct(){
+        mAct = ActList.get().getNextAct();
+        if (mAct.getmName().equals("Finish")){
+            goFinish();
+        }else {
+            sendMessage("N" + mAct.getmNum().toString() + "D");
+            if (mCountFragment != null)
+                mCountFragment.updateAct();
+        }
+    }
+
+    public String getmCount() {
+        return mCount;
+    }
+
+    public Act getmAct() {
+        return mAct;
     }
 }
