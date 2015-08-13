@@ -72,7 +72,7 @@ public class CountFragment extends Fragment{
         if (act.getmName().equals("Finish"))
             mActivity.goFinish();
         actNameText.setText(act.getmName());
-        weightText.setText(act.getmWeight().toString());
+        weightText.setText(act.getmWeight().toString()+"Kg");
         returnText.setText(ActList.get().getmCount());
     }
 

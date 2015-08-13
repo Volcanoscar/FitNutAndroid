@@ -1,6 +1,7 @@
 package me.dailydreamer.nutapp;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.Fragment;
 import android.app.ListFragment;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -83,28 +85,51 @@ public class PlanFragment extends ListFragment {
 
             TextView nameTextView = (TextView)convertView.findViewById(R.id.nameTextView);
             TextView weightTextView = (TextView)convertView.findViewById(R.id.weightTextView);
-            EditText numTextView = (EditText)convertView.findViewById(R.id.numTextView);
+            final TextView numTextView = (TextView)convertView.findViewById(R.id.numTextView);
 
             nameTextView.setText(act.getmName());
             weightTextView.setText(act.getmWeight().toString());
             numTextView.setText(act.getmNum().toString());
-
-    /*        numTextView.addTextChangedListener(new TextWatcher() {
+            numTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                public void onClick(View view) {
+                    final Dialog d = new Dialog(getActivity());
+                    d.setTitle("NumberPicker");
+                    d.setContentView(R.layout.num_picker_dialog);
+                    Button b1 = (Button) d.findViewById(R.id.button1);
+                    Button b2 = (Button) d.findViewById(R.id.button2);
+                    final NumberPicker numberPicker = (NumberPicker) d.findViewById(R.id.numberPicker);
+                    numberPicker.setFormatter(new NumberPicker.Formatter() {
+                        @Override
+                        public String format(int i) {
+                            String tmpStr = String.valueOf(i);
+                            if (i < 10) {
+                                tmpStr = "0" + tmpStr;
+                            }
+                            return tmpStr;
+                        }
+                    });
+                    numberPicker.setMaxValue(99);
+                    numberPicker.setMinValue(0);
+                    numberPicker.setValue(act.getmNum());
 
+                    b1.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            act.setmNum(numberPicker.getValue());
+                            numTextView.setText(numberPicker.getValue());
+                            d.dismiss();
+                        }
+                    });
+                    b2.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            d.dismiss();
+                        }
+                    });
+                    d.show();
                 }
-
-                @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable editable) {
-                    act.setmNum(Integer.parseInt(editable.toString()));
-                }
-            }); */
+            });
 
             return convertView;
         }

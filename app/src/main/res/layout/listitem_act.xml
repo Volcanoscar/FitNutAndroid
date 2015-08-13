@@ -2,23 +2,29 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="50dp">
     <TextView android:id="@+id/nameTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
         android:text="Name"
         android:textColor="@android:color/black" />
 
     <TextView android:id="@+id/weightTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
         android:text="Weight"
         android:textColor="@android:color/black" />
 
-    <EditText
+    <TextView
         android:id="@+id/numTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
         android:text="Num"
         android:textColor="@android:color/black"/>
 </LinearLayout>
